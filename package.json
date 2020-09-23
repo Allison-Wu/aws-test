@@ -1,0 +1,63 @@
+{
+  "name": "aws-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "linter": "tslint --project .",
+    "test": "mocha -b -r ts-node/register --exit --colors -t 30000000 --recursive 'src/**/*test.ts'",
+    "coverage": "nyc npm run test"
+  },
+  "pre-commit": [
+    "linter",
+    "test"
+  ],
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/**/*test.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true,
+    "all": true
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.1.6",
+    "@types/faker": "^4.1.2",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^14.0.27",
+    "@types/sinon": "^5.0.5",
+    "chai": "^4.2.0",
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "pre-commit": "^1.2.2",
+    "sinon": "^6.3.5",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}

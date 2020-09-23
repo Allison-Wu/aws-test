@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "output",
+    "target": "es2018",
+    "module": "commonjs",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "lib": ["es2018", "dom"],
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "allowJs": false,
+    "rootDir": "./"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

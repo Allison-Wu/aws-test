@@ -1,0 +1,21 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+node_modules/
+
+# testing
+coverage/
+
+.env
+
+npm-debug.log*
+newrelic_agent.log
+
+output/
+
+.DS_Store
+.vscode
+
+.nyc_output
+
+package-lock.json
