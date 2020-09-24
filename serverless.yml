@@ -28,6 +28,17 @@ functions:
         bucket: ${self:provider.environment.CSV_BUCKET}
         event: s3:ObjectCreated:Put
 
+  readDynamo:
+    handler: handlers/api-gateway.read
+    events:
+      - http:
+          path: /locations/{id}
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
+
   resources:
     Resources:
       DynamoDbLocationTable:
