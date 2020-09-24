@@ -1,6 +1,8 @@
 import { S3, SharedIniFileCredentials } from 'aws-sdk';
 import { isEmpty } from 'lodash';
+import * as Papa from 'papaparse';
 import { awsConfig, IAwsConfig } from '../config';
+import { Location } from '../models/Location';
 
 export class FileProcessor {
   private s3: S3;
@@ -17,12 +19,36 @@ export class FileProcessor {
   }
 
   public async handle(bucketName: string, fileName: string) {
-    const target = await this.s3.getObject({
+    const targetData = await this.s3.getObject({
       Bucket: bucketName,
       Key: fileName,
+    }).promise();
+
+    const insertDbTasks: Array<Promise<void>> = [];
+    await new Promise((resolve, reject) => {
+      Papa.parse<Location>(
+        targetData.Body && targetData.Body.toString(),
+        {
+          chunkSize: 1024,
+          header: true,
+          chunk: results => this.saveRecord(results, insertDbTasks),
+          complete: () => resolve(),
+          error: err => reject(err),
+        },
+      );
     });
-    // papaparser handle record
-    // save db
+
+    await Promise.all(insertDbTasks);
     return;
+  }
+
+  private saveRecord(results: Papa.ParseResult<Location>, tasks: Array<Promise<void>>) {
+    for (const row of results.data) {
+      const location = new Location();
+      location.latitude = row.latitude;
+      location.longitude = row.longitude;
+      location.address = row.address;
+      tasks.push(location.put());
+    }
   }
 }
