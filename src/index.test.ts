@@ -1,5 +1,5 @@
 import { assert, SinonStub } from 'sinon';
-import { loadSandbox } from '../lib/test-helper';
+import { loadSandbox } from './libs/test-helper';
 
 describe('Test', () => {
 

@@ -6,6 +6,7 @@
   "scripts": {
     "linter": "tslint --project .",
     "test": "mocha -b -r ts-node/register --exit --colors -t 30000000 --recursive 'src/**/*test.ts'",
+    "local-admin": "export AWS_ACCESS_KEY_ID=localId && export AWS_REGION=local && export DYNAMO_ENDPOINT=http://localhost:8042 && dynamodb-admin",
     "coverage": "nyc npm run test"
   },
   "pre-commit": [
@@ -42,8 +43,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.62",
     "@types/chai": "^4.1.6",
     "@types/faker": "^4.1.2",
+    "@types/lodash": "^4.14.161",
     "@types/mocha": "^5.2.5",
     "@types/node": "^14.0.27",
     "@types/sinon": "^5.0.5",
@@ -52,12 +55,20 @@
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "pre-commit": "^1.2.2",
+    "serverless": "^2.1.1",
+    "serverless-offline": "^6.7.0",
+    "serverless-plugin-typescript": "^1.1.9",
     "sinon": "^6.3.5",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.3"
   },
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "@aws/dynamodb-data-mapper": "^0.7.3",
+    "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
+    "aws-lambda": "^1.0.6",
+    "aws-sdk": "^2.759.0",
+    "dotenv": "^8.2.0",
+    "lodash": "^4.17.20"
   }
 }

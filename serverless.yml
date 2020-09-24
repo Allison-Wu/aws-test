@@ -1,0 +1,21 @@
+service: aws-test
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    S3_CSV_BUCKET: ${self:service}-csv-files-${opt:stage, 'dev'}
+
+functions:
+  readCsv:
+    handler: src/index.read
+    events:
+      - s3:
+        bucket: ${self:provider.environment.S3_CSV_BUCKET}
+        event: s3:ObjectCreated:Put
+
+plugins:
+  - serverless-plugin-typescript
+  # Local development plugins
+  # - serverless-offline
+  # - serverless-dynamodb-local

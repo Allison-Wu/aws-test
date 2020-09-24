@@ -1,21 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "output",
-    "target": "es2018",
-    "module": "commonjs",
-    "removeComments": true,
+    "experimentalDecorators": true,
     "preserveConstEnums": true,
+    "strictNullChecks": true,
     "sourceMap": true,
-    "lib": ["es2018", "dom"],
-    "noImplicitThis": true,
-    "strictNullChecks": false,
-    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "target": "es5",
+    "outDir": ".build",
     "moduleResolution": "node",
-    "declaration": true,
-    "allowJs": false,
+    "lib": ["es2015"],
     "rootDir": "./"
-  },
-  "include": [
-    "src/**/*"
-  ]
+  }
 }
