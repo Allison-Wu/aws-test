@@ -4,15 +4,47 @@ provider:
   name: aws
   runtime: nodejs12.x
   environment:
-    S3_CSV_BUCKET: ${self:service}-csv-files-${opt:stage, 'dev'}
+    CSV_BUCKET: ${self:service}-csv-files-${opt:stage, 'dev'}
+    DYNAMODB_LOCATION: ${self:service}-${opt:stage, 'dev'}-location
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+        - s3:PutObject
+        - s3:GetObject
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - 'arn:aws:s3:::${self:provider.environment.CSV_BUCKET}/*'
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_LOCATION}'
 
 functions:
   readCsv:
     handler: src/index.read
     events:
       - s3:
-        bucket: ${self:provider.environment.S3_CSV_BUCKET}
+        bucket: ${self:provider.environment.CSV_BUCKET}
         event: s3:ObjectCreated:Put
+
+  resources:
+    Resources:
+      DynamoDbLocationTable:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+          TableName: ${self:provider.environment.DYNAMODB_LOCATION}
+          AttributeDefinitions:
+            -
+              AttributeName: id
+              AttributeType: S
+          KeySchema:
+            -
+              AttributeName: id
+              KeyType: HASH
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
 
 plugins:
   - serverless-plugin-typescript
